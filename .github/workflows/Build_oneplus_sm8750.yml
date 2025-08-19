@@ -39,10 +39,13 @@ on:
         type: boolean
 
       enable_feature_b:
-         description: "添加BBR控制算法"
+         description: "选择网络调度"
          required: false
-         default: false
-         type: boolean
+         type: choice
+         options:
+            - 'FQ_CODEL'
+            - 'BBR'
+         default: 'FQ_CODEL'
       
        
 
@@ -278,7 +281,7 @@ jobs:
           cd kernel_workspace/kernel_platform
           cp "${GITHUB_WORKSPACE}/.github/workflows/Bin/main.bin" ./
           chmod +x main.bin
-          ./main.bin "setup_gki_config"
+          ./main.bin "setup_gki_config" "$ENABLE_B"
           rm -rf ./main.bin
           #Remove check_defconfig
           sudo sed -i 's/check_defconfig//' ./common/build.config.gki
