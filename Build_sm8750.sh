@@ -52,8 +52,8 @@ case $device_choice in
     4)
         DEVICE_NAME="oneplus_pad_2_pro"
         REPO_MANIFEST="oneplus_pad_2_pro.xml"
-        KERNEL_TIME="Wed Dec 11 19:16:38 UTC 2024"
-        KERNEL_SUFFIX="-android15-8-g0261dbe3cf7e-ab12786384-4k"   
+        KERNEL_TIME="Tue Mar 4 09:04:13 UTC 2025"
+        KERNEL_SUFFIX="-android15-8-g302cb15749a8-ab13157299-4k"   
         ;;
     5)
         DEVICE_NAME="oneplus_ace5_ultra"
@@ -145,7 +145,7 @@ cd "$WORKSPACE" || error "无法进入工作目录"
 
 # 检查并安装依赖
 info "检查并安装依赖..."
-DEPS=(make python3 git curl ccache flex bison libssl-dev libelf-dev bc zip)
+DEPS=(python3 p7zip-full git curl ccache libelf-dev build-essential libelf-dev flex bison libssl-dev libncurses-dev liblz4-tool zlib1g-dev libxml2-utils rsync unzip)
 MISSING_DEPS=()
 
 for pkg in "${DEPS[@]}"; do
@@ -210,13 +210,11 @@ rm -f kernel_platform/msm-kernel/android/abi_gki_protected_exports_*
 # 设置SukiSU
 info "设置SukiSU..."
 cd kernel_platform || error "进入kernel_platform失败"
-curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/susfs-1.5.8/kernel/setup.sh" | bash -s susfs-1.5.8 || error "SukiSU设置失败"
+curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/susfs-main/kernel/setup.sh" -o setup.sh && bash setup.sh susfs-main || error "SukiSU设置失败"
 
 cd KernelSU || error "进入KernelSU目录失败"
-KSU_VERSION=$(expr $(/usr/bin/git rev-list --count main) "+" 10700)
-export KSU_VERSION=$KSU_VERSION
-sed -i "s/DKSU_VERSION=12800/DKSU_VERSION=${KSU_VERSION}/" kernel/Makefile || error "修改KernelSU版本失败"
-info "$KSU_VERSION"
+export KSU_VERSION=$(expr $(git rev-list --count main 2>/dev/null || echo 13000) + 10700)
+info "SukiSU版本号：$KSU_VERSION"
 
 # 设置susfs
 info "设置susfs..."
@@ -240,11 +238,11 @@ cd $KERNEL_WORKSPACE/kernel_platform/common || { echo "进入common目录失败"
 
 
 case "$DEVICE_NAME" in
-    oneplus_13t|oneplus_ace5_ultra)
+    oneplus_13t|oneplus_ace5_ultra|oneplus_pad_2_pro)
         info "当前编译机型为 $DEVICE_NAME, 跳过patch补丁应用"
         ;;
     *)
-        info "DEVICE_NAME is $DEVICE_NAME, 正在应用patch补丁..."
+        info "正在应用patch补丁..."
         sed -i 's/-32,12 +32,38/-32,11 +32,37/g' 50_add_susfs_in_gki-android15-6.6.patch
         sed -i '/#include <trace\/hooks\/fs.h>/d' 50_add_susfs_in_gki-android15-6.6.patch
         ;;
@@ -315,6 +313,7 @@ CONFIG_KSU_SUSFS_OPEN_REDIRECT=y
 CONFIG_CRYPTO_LZ4HC=y
 CONFIG_CRYPTO_LZ4=y
 CONFIG_CRYPTO_LZ4K=y
+CONFIG_CRYPTO_LZ4KD=y
 CONFIG_CRYPTO_842=y
 CONFIG_DEBUG_INFO_BTF=y
 CONFIG_PAHOLE_HAS_SPLIT_BTF=y
@@ -372,15 +371,15 @@ export PATH="/usr/lib/ccache:$PATH"
 
 cd $KERNEL_WORKSPACE/kernel_platform/common || error "进入common目录失败"
 
-# 生成.config
+
 make -j$(nproc --all) LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC=clang \
   RUSTC=../../prebuilts/rust/linux-x86/1.73.0b/bin/rustc \
   PAHOLE=../../prebuilts/kernel-build-tools/linux-x86/bin/pahole \
   LD=ld.lld HOSTLD=ld.lld O=out KCFLAGS+=-O2 gki_defconfig all || error "失败"
 
 
-# 应用Linux补丁
-info "应用Linux补丁..."
+# 应用KPM补丁
+info "应用KPM补丁..."
 cd out/arch/arm64/boot || error "进入boot目录失败"
 curl -LO https://github.com/SukiSU-Ultra/SukiSU_KernelPatch_patch/releases/download/0.12.0/patch_linux || error "下载patch_linux失败"
 chmod +x patch_linux
