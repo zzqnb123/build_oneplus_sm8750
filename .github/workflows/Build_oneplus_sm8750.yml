@@ -64,6 +64,9 @@ jobs:
           df -h
       
       - name: ⚙️ Set REPO_MANIFEST (设置对应机型配置文件)
+        env:
+          KEEP_ORIGINAL: ${{ github.event.inputs.keep_original_settings }}
+          CUSTOM_SUFFIX: ${{ github.event.inputs.custom_kernel_suffix }}
         run: |
           case "${{ github.event.inputs.REPO_MANIFEST }}" in
             oneplus_ace5_pro)
@@ -82,6 +85,9 @@ jobs:
           case "$DEVICES_NAME" in
             oneplus_13 | oneplus_ace5_pro | realme_GT7pro_Speed)
               echo 'DEFAULT_SUFFIX=-android15-8-g013ec21bba94-abogki383916444-4k' >> $GITHUB_ENV
+              ;;
+            realme_GT7)
+              echo 'DEFAULT_SUFFIX="-android15-8-g06c41a4a6e98-abogki395793266-4k' >> $GITHUB_ENV
               ;;
             realme_GT7pro)
               echo 'DEFAULT_SUFFIX="-android15-8-gc6f5283046c6-ab12364222-4k' >> $GITHUB_ENV
@@ -103,6 +109,9 @@ jobs:
             case "$DEVICES_NAME" in
               oneplus_13 | oneplus_ace5_pro | realme_GT7pro_Speed)
                 echo 'KERNEL_TIME=Tue Dec 17 23:36:49 UTC 2024' >> $GITHUB_ENV
+                ;;
+              realme_GT7pro)
+                echo 'KERNEL_TIME=Mon Jan 20 03:24:58 UTC 2025' >> $GITHUB_ENV
                 ;;
               realme_GT7pro)
                 echo 'KERNEL_TIME=Fri Sep 13 02:08:57 UTC 2024' >> $GITHUB_ENV
