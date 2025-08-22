@@ -12,6 +12,7 @@ on:
           - 'oneplus_13t'
           - 'oneplus_pad_2_pro'
           - 'oneplus_ace5_ultra'
+          - 'realme_GT7'
           - 'realme_GT7pro'
           - 'realme_GT7pro_Speed'
         default: 'oneplus_ace5_pro'
