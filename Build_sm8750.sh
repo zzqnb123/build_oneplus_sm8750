@@ -28,7 +28,7 @@ info "5.一加 Ace5 至尊版"
 info "6.真我 GT 7 Pro"
 info "7.真我 GT 7 Pro 竞速"
 
-read -p "输入选择 [1-4]: " device_choice
+read -p "输入选择 [1-7]: " device_choice
 
 case $device_choice in
     1)
@@ -74,7 +74,7 @@ case $device_choice in
         KERNEL_SUFFIX="-android15-8-g013ec21bba94-abogki383916444-4k"
         ;;
     *)
-        error "无效的选择，请输入1-3之间的数字"
+        error "无效的选择，请输入1-7之间的数字"
         ;;
 esac
 
@@ -111,7 +111,7 @@ info "内核源码文件: $REPO_MANIFEST"
 info "内核名称: $KERNEL_SUFFIX"
 info "内核时间: $KERNEL_TIME"
 info "是否开启KPM: $ENABLE_KPM"
-info "是否开启LZ4KD: $ENABLE_LZ4KD"
+info "是否开启LZ4: $ENABLE_LZ4KD"
 info "是否开启BBR: $ENABLE_BBR"
 
 # 环境变量 - 按机型区分ccache目录
@@ -310,11 +310,11 @@ CONFIG_KSU_SUSFS_ENABLE_LOG=y
 CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y
 CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y
 CONFIG_KSU_SUSFS_OPEN_REDIRECT=y
-CONFIG_CRYPTO_LZ4HC=y
-CONFIG_CRYPTO_LZ4=y
-CONFIG_CRYPTO_LZ4K=y
-CONFIG_CRYPTO_LZ4KD=y
-CONFIG_CRYPTO_842=y
+#CONFIG_CRYPTO_LZ4HC=y
+#CONFIG_CRYPTO_LZ4=y
+#CONFIG_CRYPTO_LZ4K=y
+#CONFIG_CRYPTO_LZ4KD=y
+#CONFIG_CRYPTO_842=y
 CONFIG_DEBUG_INFO_BTF=y
 CONFIG_PAHOLE_HAS_SPLIT_BTF=y
 CONFIG_PAHOLE_HAS_BTF_TAG=y
@@ -408,6 +408,6 @@ cp "$KERNEL_WORKSPACE/kernel_platform/common/out/arch/arm64/boot/Image" "$WIN_OU
 cp "$WORKSPACE/AnyKernel3/AnyKernel3_${KSU_VERSION}_${DEVICE_NAME}_SuKiSu.zip" "$WIN_OUTPUT_DIR/"
 
 rm -rf $WORKSPACE
-info "内核包路径: C:/Kernel_Build/${DEVICE_NAME}/AnyKernel3_${KSU_VERSION}_${DEVICE_NAME}_SuKiSu.zip"
+info "内核包路径: C:/Kernel_Build/${DEVICE_NAME}/AnyKernel3_${KSU_VERSION}_${DEVICE_NAME}_SukiSU.zip"
 info "Image路径: C:/Kernel_Build/${DEVICE_NAME}/Image"
 info "请在C盘目录中查找内核包和Image文件。"
