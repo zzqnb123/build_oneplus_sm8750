@@ -34,38 +34,38 @@ case $device_choice in
     1)
         DEVICE_NAME="oneplus_ace5_pro"
         REPO_MANIFEST="JiuGeFaCai_oneplus_ace5_pro_v.xml"
-        KERNEL_TIME="Tue Dec 17 23:36:49 UTC 2024"
-        KERNEL_SUFFIX="-android15-8-g013ec21bba94-abogki383916444-4k"
+        KERNEL_TIME="Mon May 12 09:09:59 UTC 2025"
+        KERNEL_SUFFIX="-android15-8-g4dc61d72e02f-abogki415959920-4k"
         ;;
     2)
         DEVICE_NAME="oneplus_13"
         REPO_MANIFEST="JiuGeFaCai_oneplus_13_v.xml"
-        KERNEL_TIME="Tue Dec 17 23:36:49 UTC 2024"
-        KERNEL_SUFFIX="-android15-8-g013ec21bba94-abogki383916444-4k"
+        KERNEL_TIME="Mon May 12 09:09:59 UTC 2025"
+        KERNEL_SUFFIX="-android15-8-g4dc61d72e02f-abogki415959920-4k"
         ;;
     3)
         DEVICE_NAME="oneplus_13t"
         REPO_MANIFEST="oneplus_13t.xml"
-        KERNEL_TIME="FriApr 25 01:56:53 UTC 2025"
-        KERNEL_SUFFIX="-android15-8-gba3bcfd39307-abogki413159095-4k"
+        KERNEL_TIME="Tue Jun 10 12:12:23 UTC 2025"
+        KERNEL_SUFFIX="-android15-8-gd43086512890-abogki423825152-4k"
         ;;
     4)
         DEVICE_NAME="oneplus_pad_2_pro"
         REPO_MANIFEST="oneplus_pad_2_pro.xml"
-        KERNEL_TIME="Tue Mar 4 09:04:13 UTC 2025"
-        KERNEL_SUFFIX="-android15-8-g302cb15749a8-ab13157299-4k"   
+        KERNEL_TIME="Tue Jun  3 03:22:33 UTC 2025"
+        KERNEL_SUFFIX="-android15-8-g7b1f455c7143-ab13591283-4k"   
         ;;
     5)
         DEVICE_NAME="oneplus_ace5_ultra"
         REPO_MANIFEST="oneplus_ace5_ultra.xml"
-        KERNEL_TIME="Fri Apr 18 19:35:07 UTC 2025"
-        KERNEL_SUFFIX="-android15-8-gfc70d29746a7-abogki412262948-4k"
+        KERNEL_TIME="Tue Jul  1 19:48:18 UTC 2025"
+        KERNEL_SUFFIX="-android15-8-g29d86c5fc9dd-abogki428889875-4k"
         ;;  
     6)
         DEVICE_NAME="realme_GT7pro"
         REPO_MANIFEST="realme_GT7pro.xml"
-        KERNEL_TIME="Tue Dec 17 23:36:49 UTC 2024"
-        KERNEL_SUFFIX="-android15-8-g013ec21bba94-abogki383916444-4k"
+        KERNEL_TIME="Fri Sep 13 02:08:57 UTC 2024"
+        KERNEL_SUFFIX="-android15-8-gc6f5283046c6-ab12364222-4k"
         ;;
     7)
         DEVICE_NAME="realme_GT7pro_Speed"
@@ -237,16 +237,16 @@ fi
 cd $KERNEL_WORKSPACE/kernel_platform/common || { echo "进入common目录失败"; exit 1; }
 
 
-case "$DEVICE_NAME" in
-    oneplus_13t|oneplus_ace5_ultra|oneplus_pad_2_pro)
-        info "当前编译机型为 $DEVICE_NAME, 跳过patch补丁应用"
-        ;;
-    *)
-        info "正在应用patch补丁..."
-        sed -i 's/-32,12 +32,38/-32,11 +32,37/g' 50_add_susfs_in_gki-android15-6.6.patch
-        sed -i '/#include <trace\/hooks\/fs.h>/d' 50_add_susfs_in_gki-android15-6.6.patch
-        ;;
-esac
+# case "$DEVICE_NAME" in
+#     oneplus_13t|oneplus_ace5_ultra|oneplus_pad_2_pro)
+#         info "当前编译机型为 $DEVICE_NAME, 跳过patch补丁应用"
+#         ;;
+#     *)
+#         info "正在应用patch补丁..."
+#         sed -i 's/-32,12 +32,38/-32,11 +32,37/g' 50_add_susfs_in_gki-android15-6.6.patch
+#         sed -i '/#include <trace\/hooks\/fs.h>/d' 50_add_susfs_in_gki-android15-6.6.patch
+#         ;;
+# esac
 
 patch -p1 < 50_add_susfs_in_gki-android15-6.6.patch || info "SUSFS补丁应用可能有警告"
 cp "$KERNEL_WORKSPACE/SukiSU_patch/hooks/syscall_hooks.patch" ./ || error "复制syscall_hooks.patch失败"
@@ -388,16 +388,16 @@ rm -f Image
 mv oImage Image || error "替换Image失败"
 
 # 创建AnyKernel3包
-info "创建AnyKernel3包..."
-cd "$WORKSPACE" || error "返回工作目录失败"
-git clone -q https://github.com/showdo/AnyKernel3.git --depth=1 || info "AnyKernel3已存在"
-rm -rf ./AnyKernel3/.git
-rm -f ./AnyKernel3/push.sh
-cp "$KERNEL_WORKSPACE/kernel_platform/common/out/arch/arm64/boot/Image" ./AnyKernel3/ || error "复制Image失败"
+# info "创建AnyKernel3包..."
+# cd "$WORKSPACE" || error "返回工作目录失败"
+# git clone -q https://github.com/showdo/AnyKernel3.git --depth=1 || info "AnyKernel3已存在"
+# rm -rf ./AnyKernel3/.git
+# rm -f ./AnyKernel3/push.sh
+# cp "$KERNEL_WORKSPACE/kernel_platform/common/out/arch/arm64/boot/Image" ./AnyKernel3/ || error "复制Image失败"
 
 # 打包
-cd AnyKernel3 || error "进入AnyKernel3目录失败"
-zip -r "AnyKernel3_${KSU_VERSION}_${DEVICE_NAME}_SuKiSu.zip" ./* || error "打包失败"
+# cd AnyKernel3 || error "进入AnyKernel3目录失败"
+# zip -r "AnyKernel3_${KSU_VERSION}_${DEVICE_NAME}_SuKiSu.zip" ./* || error "打包失败"
 
 # 创建C盘输出目录（通过WSL访问Windows的C盘）
 WIN_OUTPUT_DIR="/mnt/c/Kernel_Build/${DEVICE_NAME}/"
@@ -405,9 +405,9 @@ mkdir -p "$WIN_OUTPUT_DIR" || error "无法创建Windows目录，可能未挂载
 
 # 复制Image和AnyKernel3包
 cp "$KERNEL_WORKSPACE/kernel_platform/common/out/arch/arm64/boot/Image" "$WIN_OUTPUT_DIR/"
-cp "$WORKSPACE/AnyKernel3/AnyKernel3_${KSU_VERSION}_${DEVICE_NAME}_SuKiSu.zip" "$WIN_OUTPUT_DIR/"
+# cp "$WORKSPACE/AnyKernel3/AnyKernel3_${KSU_VERSION}_${DEVICE_NAME}_SuKiSu.zip" "$WIN_OUTPUT_DIR/"
 
 rm -rf $WORKSPACE
-info "内核包路径: C:/Kernel_Build/${DEVICE_NAME}/AnyKernel3_${KSU_VERSION}_${DEVICE_NAME}_SukiSU.zip"
+# info "内核包路径: C:/Kernel_Build/${DEVICE_NAME}/AnyKernel3_${KSU_VERSION}_${DEVICE_NAME}_SukiSU.zip"
 info "Image路径: C:/Kernel_Build/${DEVICE_NAME}/Image"
-info "请在C盘目录中查找内核包和Image文件。"
+info "请在C盘目录中查找Image文件。"
