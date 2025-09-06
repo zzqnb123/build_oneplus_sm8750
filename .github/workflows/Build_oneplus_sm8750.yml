@@ -18,8 +18,8 @@ on:
         default: 'oneplus_ace5_pro'
 
       custom_Serialid_suffix:
-      description: "📱请输入设备唯一SN码"
-      required: true
+        description: "📱请输入设备唯一SN码"
+        required: true
 
       keep_original_settings:
         description: "📝保持原内核名称及构建时间(不懂请保持默认)"
