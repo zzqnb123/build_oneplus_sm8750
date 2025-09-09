@@ -47,8 +47,8 @@ case $device_choice in
     3)
         DEVICE_NAME="oneplus_13t"
         REPO_MANIFEST="oneplus_13t.xml"
-        KERNEL_TIME="Tue Jun 10 12:12:23 UTC 2025"
-        KERNEL_SUFFIX="-android15-8-gd43086512890-abogki423825152-4k"
+        KERNEL_TIME="Tue Jul  1 19:48:18 UTC 2025"
+        KERNEL_SUFFIX="-android15-8-g29d86c5fc9dd-abogki428889875-4k"
         ;;
     4)
         DEVICE_NAME="oneplus_pad_2_pro"
